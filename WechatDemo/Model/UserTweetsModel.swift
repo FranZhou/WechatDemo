@@ -17,11 +17,11 @@ struct UserTweetsModel: Codable {
     // MARK: - error not exist
     var content: String?
     
-    var images: Array<UserTweetsImageModel>?
+    var images: [UserTweetsImageModel]?
     
     var sender: UserInfoModel?
     
-    var comments: Array<UserTweetsModel>?
+    var comments: [UserTweetsModel]?
     
 }
 

@@ -9,16 +9,16 @@ import UIKit
 import SnapKit
 
 class WechatMomentsUserInfoCell: UITableViewCell {
-
+    
     
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        
+        imageView.backgroundColor = .red
         return imageView
     }()
     
     lazy var nickLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .white
         return label
@@ -26,7 +26,7 @@ class WechatMomentsUserInfoCell: UITableViewCell {
     
     lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        
+        imageView.backgroundColor = .black
         return imageView
     }()
     
@@ -34,10 +34,10 @@ class WechatMomentsUserInfoCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
@@ -63,13 +63,45 @@ class WechatMomentsUserInfoCell: UITableViewCell {
             maker.width.height.equalTo(profileWH)
             maker.bottom.equalTo(-30)
         }
+        
+        self.avatarImageView.snp.makeConstraints { maker in
+            maker.bottom.equalTo(-10)
+            maker.right.equalTo(self.profileImageView.snp.right).offset(-16)
+            maker.width.height.equalTo(70)
+        }
+        
+        self.nickLabel.snp.makeConstraints { maker in
+            maker.right.equalTo(self.avatarImageView.snp.left).offset(-20)
+            maker.bottom.equalTo(self.avatarImageView.snp.centerY)
+        }
     }
 }
 
 extension WechatMomentsUserInfoCell {
     
-    private func setupUI(){
+    private func setupUI() {
+        self.separatorInset.left = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+
+        self.contentView.backgroundColor = .white
         
+        self.contentView.addSubview(self.profileImageView)
+        self.contentView.addSubview(self.avatarImageView)
+        self.contentView.addSubview(self.nickLabel)
+        
+        self.setNeedsUpdateConstraints()
+    }
+    
+    public func updateCell(with model: UserInfoModel) {
+        
+        self.nickLabel.text = model.nick ?? ""
+    }
+}
+
+
+extension WechatMomentsUserInfoCell {
+    
+    public static func reuseIdentifier() -> String {
+        return NSStringFromClass(self)
     }
     
 }

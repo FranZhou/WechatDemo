@@ -17,7 +17,7 @@ class WechatMomentsDataPresenter: NSObject {
     private var pageNO = 1
     
     /// pageSize for tweets
-    private let pageSize = 5
+    private let pageSize = 100
     
     /// tweets cache, don't request more times
     private var finishLoadTweets = false
