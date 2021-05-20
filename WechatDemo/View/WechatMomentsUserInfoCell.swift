@@ -94,6 +94,10 @@ extension WechatMomentsUserInfoCell {
     public func updateCell(with model: UserInfoModel) {
         
         self.nickLabel.text = model.nick ?? ""
+        
+        ImageLoaderManager.manager.imageForUrl(urlString: model.profile_image ?? "") { image, urlString in
+            debugPrint(image)
+        }
     }
 }
 

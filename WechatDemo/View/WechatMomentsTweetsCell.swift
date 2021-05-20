@@ -177,7 +177,9 @@ extension WechatMomentsTweetsCell {
                 maker.left.equalTo(self.avatarImageView.snp.right).offset(8)
                 maker.right.equalTo(-16)
                 maker.bottom.lessThanOrEqualTo(self.contentView.snp.bottom).offset(-10)
-                maker.height.equalTo(WechatMomentsTweetsCell.collectionViewHeight(totalCount: self.model?.images?.count ?? 0))
+//                maker.height.equalTo(WechatMomentsTweetsCell.collectionViewHeight(totalCount: self.model?.images?.count ?? 0))
+                
+                maker.height.equalTo(self.heightForCollectionView(totalCount: self.model?.images?.count ?? 0))
             }
             
             lastView = self.imagesView
@@ -216,17 +218,16 @@ extension WechatMomentsTweetsCell {
     /// 计算图片展示collectionView的高度
     /// - Parameter totalCount: 要展示的图片
     /// - Returns: CGFloat
-    public static func collectionViewHeight(totalCount: Int) -> CGFloat{
+    public func heightForCollectionView(totalCount: Int) -> CGFloat{
         if totalCount == 0 {
             return 0
         } else if totalCount == 1 {
             return WechatMomentsTweetsCell.oneImageSize.height
         } else {
-            let minScreenWidth = min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-            let collectionWidth = minScreenWidth - (16.0 + 40.0 + 8.0 + 16.0) + 16.0
+            let collectionWidth = UIScreen.main.bounds.width - (16.0 + 40.0 + 8.0 + 16.0) + 16.0 - self.safeAreaInsets.left - self.safeAreaInsets.right
             let itemWidth = WechatMomentsTweetsCell.moreImageSize.width
             let rowCount: Int = Int(collectionWidth / (itemWidth + 16))
-            let sectionCount = totalCount / rowCount
+            let sectionCount = totalCount / rowCount + (totalCount % rowCount > 0 ? 1 : 0)
             return WechatMomentsTweetsCell.moreImageSize.height * CGFloat(sectionCount) + 16 * (CGFloat(sectionCount) - 1)
         }
     }
