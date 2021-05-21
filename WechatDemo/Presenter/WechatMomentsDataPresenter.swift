@@ -17,7 +17,7 @@ class WechatMomentsDataPresenter: NSObject {
     private var pageNO = 1
     
     /// pageSize for tweets
-    private let pageSize = 100
+    private let pageSize = 5
     
     /// tweets cache, don't request more times
     private var finishLoadTweets = false
@@ -96,12 +96,15 @@ class WechatMomentsDataPresenter: NSObject {
                     self.userTweets = self.filterUserTweets(userTweets)
                     self.finishLoadTweets = true
                     
-                    let start = min((pageNO - 1) * self.pageSize , userTweets.count - 1)
+                    let start = (pageNO - 1) * self.pageSize
                     let end = max(start,
                                   min(start + self.pageSize, userTweets.count)
                                   )
                     
-                    let resultTweets = Array(userTweets[start..<end])
+                    var resultTweets: [UserTweetsModel] = []
+                    if start < end{
+                        resultTweets = Array(userTweets[start..<end])
+                    }
                     
                     callback(resultTweets, error)
 
@@ -116,12 +119,16 @@ class WechatMomentsDataPresenter: NSObject {
             
             let userTweets = self.userTweets
             
-            let start = min((pageNO - 1) * self.pageSize , userTweets.count - 1)
+            let start = (pageNO - 1) * self.pageSize
             let end = max(start,
                           min(start + self.pageSize, userTweets.count)
                           )
             
-            let resultTweets = Array(userTweets[start..<end])
+            var resultTweets: [UserTweetsModel] = []
+            if start < end{
+                resultTweets = Array(userTweets[start..<end])
+            }
+           
                         
             callback(resultTweets, nil)
             

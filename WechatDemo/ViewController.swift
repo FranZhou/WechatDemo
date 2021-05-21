@@ -32,9 +32,25 @@ class ViewController: UIViewController {
         tableView.register(WechatMomentsUserInfoCell.self, forCellReuseIdentifier: WechatMomentsUserInfoCell.reuseIdentifier())
         tableView.register(WechatMomentsTweetsCell.self, forCellReuseIdentifier: WechatMomentsTweetsCell.reuseIdentifier())
         
+        tableView.fz_header = HeaderRefreshView(refreshBlock: { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            self.reloadPageData()
+        })
+        
+        tableView.fz_footer = FooterRefreshView(refreshBlock: { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            self.loadNextPageData()
+        })
+        
         return tableView
     }()
     
+    /// deinit block
+    lazy var deinitClosure: [() -> Void] = []
     
     /// data presenter
     lazy var dataPresenter = WechatMomentsDataPresenter()
@@ -72,7 +88,14 @@ class ViewController: UIViewController {
     }
     
     deinit {
-        self.tableView.removeObserver(self, forKeyPath: "contentOffset")
+        deinitClosure.forEach { closure in
+            closure()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationBarAlphaStatusChange()
     }
     
 }
@@ -83,15 +106,22 @@ extension ViewController {
     /// tableView kvo for contentOffset
     private func addKVO() {
         self.tableView.addObserver(self, forKeyPath: "contentOffset", options: [NSKeyValueObservingOptions.old, NSKeyValueObservingOptions.new], context: nil)
+        
+        deinitClosure.append { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            self.tableView.removeObserver(self, forKeyPath: "contentOffset")
+        }
     }
     
     
-    /// 导航栏透明度变化
+    /// 导航栏变化
     private func navigationBarAlphaStatusChange(){
         let offsetY = self.tableView.contentOffset.y
         let profileWH = min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         
-        self.navigationController?.navigationBar.alpha = offsetY >= profileWH ? 1 : 0
+        self.navigationController?.navigationBar.isHidden = (offsetY >= profileWH ? false : true)
     }
     
 }
@@ -115,6 +145,8 @@ extension ViewController {
             guard let `self` = self else {
                 return
             }
+            
+            self.tableView.fz_header?.endRefreshing()
             
             if let userInfo = userInfo {
                 
@@ -158,7 +190,23 @@ extension ViewController {
     }
     
     private func loadNextPageData() {
-        
+        self.dataPresenter.loadNextPageTweets {  [weak self] userTweets, error in
+            guard let `self` = self else {
+                return
+            }
+            
+            self.tableView.fz_footer?.endRefreshing()
+            
+            if let userTweets = userTweets {
+                DispatchQueue.main.async { [weak self] in
+                    guard let `self` = self else {
+                        return
+                    }
+                    self.userTweets.append(contentsOf: userTweets)
+                    self.tableView.reloadData()
+                }
+            }
+        }
     }
     
 }
