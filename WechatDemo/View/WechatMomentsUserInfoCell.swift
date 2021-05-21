@@ -13,7 +13,8 @@ class WechatMomentsUserInfoCell: UITableViewCell {
     
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .red
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -26,7 +27,8 @@ class WechatMomentsUserInfoCell: UITableViewCell {
     
     lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .black
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -93,11 +95,11 @@ extension WechatMomentsUserInfoCell {
     
     public func updateCell(with model: UserInfoModel) {
         
+        self.profileImageView.fz_setImage(with: model.profile_image)
+        
         self.nickLabel.text = model.nick ?? ""
         
-        ImageLoaderManager.manager.imageForUrl(urlString: model.profile_image ?? "") { image, urlString in
-            debugPrint(image)
-        }
+        self.avatarImageView.fz_setImage(with: model.avatar)
     }
 }
 

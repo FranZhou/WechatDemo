@@ -27,14 +27,14 @@ class WechatMomentsTweetsCell: UITableViewCell {
     lazy var nickLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-//        label.textColor = .white
         label.textColor = .black
         return label
     }()
     
     lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .black
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -150,6 +150,8 @@ extension WechatMomentsTweetsCell {
         self.contentLabel.text = model.content ?? ""
         self.contentLabel.sizeToFit()
         
+        self.avatarImageView.fz_setImage(with: model.sender?.avatar)
+        
         // change layput itemSize
         if let images = model.images {
             if images.count == 1 {
@@ -234,7 +236,7 @@ extension WechatMomentsTweetsCell {
     
 }
 
-
+// MARK: - CollectionView Delegate and DataSource
 extension WechatMomentsTweetsCell: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -243,7 +245,26 @@ extension WechatMomentsTweetsCell: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(UICollectionViewCell.self), for: indexPath)
-        cell.contentView.backgroundColor = .red
+        let image = self.model?.images?[indexPath.row]
+        
+        
+        /// 没有自定义cell，直接在这里创建并且添加到cell.contentView下
+        /// 每次先获取，获取不到就穿件添加
+        let imageViewTag: Int = 101
+        var imageView: UIImageView? = cell.contentView.viewWithTag(imageViewTag) as? UIImageView
+        if imageView == nil {
+            imageView = UIImageView()
+            imageView?.tag = imageViewTag
+            imageView?.contentMode = .scaleAspectFill
+            imageView?.clipsToBounds = true
+            cell.contentView.addSubview(imageView!)
+            
+            imageView?.snp.makeConstraints({ maker in
+                maker.edges.equalTo(0)
+            })
+        }
+        
+        imageView?.fz_setImage(with: image?.url)
         
         return cell
     }

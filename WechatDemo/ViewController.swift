@@ -52,6 +52,8 @@ class ViewController: UIViewController {
         
         self.setupUI()
         self.reloadPageData()
+        
+        self.addKVO()
     }
     
     
@@ -63,6 +65,35 @@ class ViewController: UIViewController {
         }
     }
     
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "contentOffset" {
+            self.navigationBarAlphaStatusChange()
+        }
+    }
+    
+    deinit {
+        self.tableView.removeObserver(self, forKeyPath: "contentOffset")
+    }
+    
+}
+
+extension ViewController {
+    
+    
+    /// tableView kvo for contentOffset
+    private func addKVO() {
+        self.tableView.addObserver(self, forKeyPath: "contentOffset", options: [NSKeyValueObservingOptions.old, NSKeyValueObservingOptions.new], context: nil)
+    }
+    
+    
+    /// 导航栏透明度变化
+    private func navigationBarAlphaStatusChange(){
+        let offsetY = self.tableView.contentOffset.y
+        let profileWH = min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+        
+        self.navigationController?.navigationBar.alpha = offsetY >= profileWH ? 1 : 0
+    }
+    
 }
 
 extension ViewController {
@@ -71,6 +102,8 @@ extension ViewController {
     /// 加载界面UI
     private func setupUI() {
         self.view.addSubview(self.tableView)
+        
+        self.navigationBarAlphaStatusChange()
     }
     
     
