@@ -61,7 +61,7 @@ class WechatMomentsUserInfoCell: UITableViewCell {
         let profileWH = min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         
         self.profileImageView.snp.makeConstraints { maker in
-            maker.top.equalTo(0)
+            maker.top.equalTo(-50)
             maker.centerX.equalTo(self.contentView.snp.centerX)
             maker.width.height.equalTo(profileWH)
             maker.bottom.equalTo(-30)

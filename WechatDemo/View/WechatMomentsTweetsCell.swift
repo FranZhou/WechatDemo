@@ -224,7 +224,7 @@ extension WechatMomentsTweetsCell {
         } else if totalCount == 1 {
             return WechatMomentsTweetsCell.oneImageSize.height
         } else {
-            let collectionWidth = UIScreen.main.bounds.width - (16.0 + 40.0 + 8.0 + 16.0) + 16.0 - self.safeAreaInsets.left - self.safeAreaInsets.right
+            let collectionWidth = UIScreen.main.bounds.width - (16.0 + 40.0 + 8.0 + 16.0) - self.safeAreaInsets.left - self.safeAreaInsets.right + 16.0
             let itemWidth = WechatMomentsTweetsCell.moreImageSize.width
             let rowCount: Int = Int(collectionWidth / (itemWidth + 16))
             let sectionCount = totalCount / rowCount + (totalCount % rowCount > 0 ? 1 : 0)

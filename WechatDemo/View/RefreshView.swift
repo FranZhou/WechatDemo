@@ -37,7 +37,6 @@ class RefreshView: UIView {
                     case .refreshing:
                         debugPrint("refreshing")
                         
-                        // 在动画中设置顶部inset 否则会特别生硬, 注释掉看效果即可.
                         UIView.animate(withDuration: 0.25, animations: {
                             if let scrollView = self.getSuperScrollview(){
                                 scrollView.contentInset.top = scrollView.contentInset.top + self.refreshHeight
@@ -81,6 +80,8 @@ class RefreshView: UIView {
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        
+        // 加入到父视图下面，开始处理自己的事
         self.prepareForUI()
     }
     
@@ -93,22 +94,29 @@ class RefreshView: UIView {
         self.layoutForUI()
     }
     
-    // MARK: - override
+    // MARK: - override 这些都是需要子类重写的
+    
+    /// UI
     public func prepareForUI(){
         
     }
     
+    /// UI布局变化
     public func layoutForUI(){
-        
     }
     
+    
+    /// 响应状态变化
+    /// - Parameter refreshType: refreshType
     public func refreshStatusChanged(_ refreshType: RefreshControlType){
         
-        
     }
     
+    
+    /// 结束刷新
     public func endRefreshing() {
         self.refreshType = .normal
+        
     }
     
 }
@@ -116,7 +124,7 @@ class RefreshView: UIView {
 extension RefreshView {
     
     
-    /// 获取父视图，类型判断UIScrollView
+    /// 获取父视图，判断类型UIScrollView
     /// - Returns: UIScrollView?
     internal func getSuperScrollview() -> UIScrollView?{
         if let scrollView = self.superview as? UIScrollView{
@@ -125,12 +133,17 @@ extension RefreshView {
         return nil
     }
     
+    
+    /// 视图为scrollview时，添加kvo
+    /// - Parameter view: view as? UIScrollView
     internal func addKVO(for view: UIView?){
         if let scrollView = view as? UIScrollView {
             scrollView.addObserver(self, forKeyPath: "contentOffset", options: [NSKeyValueObservingOptions.old, NSKeyValueObservingOptions.new], context: nil)
         }
     }
     
+    /// 视图为scrollview时，移除kvo
+    /// - Parameter view: view as? UIScrollView
     internal func removeKVO(for view: UIView?) {
         if let scrollView = view as? UIScrollView {
             scrollView.removeObserver(self, forKeyPath: "contentOffset")

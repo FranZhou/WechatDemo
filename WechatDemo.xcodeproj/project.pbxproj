@@ -29,6 +29,7 @@
 		1D8DDD9F2657540900108C6B /* HeaderRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8DDD9E2657540900108C6B /* HeaderRefreshView.swift */; };
 		1D8DDDA12657541800108C6B /* FooterRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8DDDA02657541800108C6B /* FooterRefreshView.swift */; };
 		1D8DDDA326575BA100108C6B /* RefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8DDDA226575BA100108C6B /* RefreshView.swift */; };
+		1D8DDDA5265790EC00108C6B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8DDDA4265790EC00108C6B /* NetworkManager.swift */; };
 		5F87E7AAC7ECCC1C0D2F801F /* Pods_WechatDemo_WechatDemoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9099C235A52DCBC6950209A7 /* Pods_WechatDemo_WechatDemoUITests.framework */; };
 		FE4D2CB64E30436FC4E56665 /* Pods_WechatDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6448B15D4C1F12E1E3585AB /* Pods_WechatDemo.framework */; };
 /* End PBXBuildFile section */
@@ -78,6 +79,7 @@
 		1D8DDD9E2657540900108C6B /* HeaderRefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderRefreshView.swift; sourceTree = "<group>"; };
 		1D8DDDA02657541800108C6B /* FooterRefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterRefreshView.swift; sourceTree = "<group>"; };
 		1D8DDDA226575BA100108C6B /* RefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshView.swift; sourceTree = "<group>"; };
+		1D8DDDA4265790EC00108C6B /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		1F69DFD58BA773FA457F15C9 /* Pods-WechatDemo-WechatDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WechatDemo-WechatDemoUITests.release.xcconfig"; path = "Target Support Files/Pods-WechatDemo-WechatDemoUITests/Pods-WechatDemo-WechatDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2BC798F7AE16C40936171262 /* Pods-WechatDemo-WechatDemoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WechatDemo-WechatDemoUITests.debug.xcconfig"; path = "Target Support Files/Pods-WechatDemo-WechatDemoUITests/Pods-WechatDemo-WechatDemoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		379162114A15E75BA1A0BD33 /* Pods-WechatDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WechatDemo.debug.xcconfig"; path = "Target Support Files/Pods-WechatDemo/Pods-WechatDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				1D8DDD962656A23800108C6B /* UIScrollView+Refresh.swift */,
 				1D8DDD9A2656B19800108C6B /* String+MD5.swift */,
 				1D8DDD982656A26100108C6B /* ImageLoaderManager.swift */,
+				1D8DDDA4265790EC00108C6B /* NetworkManager.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -487,6 +490,7 @@
 				1D403170265635B200F8E867 /* WechatMomentsCommentsView.swift in Sources */,
 				1D4031662655FD4900F8E867 /* UserInfoModel.swift in Sources */,
 				1D4031652655FD4900F8E867 /* UserTweetsModel.swift in Sources */,
+				1D8DDDA5265790EC00108C6B /* NetworkManager.swift in Sources */,
 				1D8DDD952656762500108C6B /* UIImage+Helper.swift in Sources */,
 				1D4031312655230C00F8E867 /* ViewController.swift in Sources */,
 				1D8DDD9D2657467500108C6B /* UIImageView+Loader.swift in Sources */,

@@ -26,6 +26,13 @@ class ImageLoaderManager: NSObject {
     /// 多线程队列： 读写锁，读取缓存图片时不加锁，保存图片至缓存时使用栅栏
     private lazy var imageSearchQueue = DispatchQueue(label: "com.franzhou.WechatDemo.ImageLoaderManager", attributes: DispatchQueue.Attributes.concurrent)
     
+    
+    ///
+    private lazy var downloadingUrl:[String: [()->Void]] = {
+        let array: [String: [()->Void]] = [:]
+        return array
+    }()
+    
 }
 
 extension ImageLoaderManager {
@@ -109,26 +116,28 @@ extension ImageLoaderManager {
     ///   - callback: callback
     private func downloadImage(with urlString: String, callback:@escaping (_ image: UIImage?, _ url: String) -> Void) {
         
+        // TODO: 这里有一个问题，如果同一时间都在请求一个url的cache，都到了下载这里，这里会出现重复下载情况
+        
         // 下载图片
         self.imageSearchQueue.async { [weak self] in
             guard let `self` = self else {
                 return
             }
-            
+
             // 网络下载
-            AF.download(urlString)
-                .downloadProgress(closure: { progress in
+            NetworkManager
+                .manager
+                .download(urlString: urlString) { progress in
                     debugPrint(progress)
-                })
-                .responseData { [weak self] dataResponse in
+                } callback: { [weak self] data, error in
                     guard let `self` = self else {
                         return
                     }
-                    if let data = dataResponse.value,
+                    if let data = data,
                        let image = UIImage(data: data)
                     {
                         callback(image, urlString)
-                        
+
                         // cache image to memory and disk
                         self.cache(image: image, for: urlString)
                     } else {
@@ -187,6 +196,10 @@ extension ImageLoaderManager {
             let directoryPath = url.path
             
             let isDirectory = UnsafeMutablePointer<ObjCBool>.allocate(capacity: MemoryLayout<ObjCBool>.size)
+            defer {
+                isDirectory.deallocate()
+            }
+            
             if fileManager.fileExists(atPath: directoryPath, isDirectory: isDirectory) {
                 if !isDirectory.pointee.boolValue {
                     try? fileManager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
