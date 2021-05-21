@@ -20,6 +20,8 @@ class HeaderRefreshView: RefreshView {
         if keyPath == "contentOffset",
            let scrollView = self.getSuperScrollview(){
             
+            self.frame.size.width = scrollView.frame.size.width
+            
             // 定义偏移临界值
             let criticalValue = -self.refreshHeight
             
@@ -71,10 +73,18 @@ class HeaderRefreshView: RefreshView {
     
     override func prepareForUI() {
         super.prepareForUI()
-        
         self.addSubview(self.activityIndicatorView)
         
-        self.activityIndicatorView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: self.refreshHeight)
+    }
+    
+    override func layoutForUI() {
+        super.layoutForUI()
+        self.activityIndicatorView.frame = CGRect(
+            x: (self.frame.size.width - self.activityIndicatorView.frame.size.width) / 2.0,
+            y: (self.frame.size.height - self.activityIndicatorView.frame.size.height) / 2.0,
+            width: self.activityIndicatorView.frame.size.width,
+            height: self.activityIndicatorView.frame.size.height
+        )
     }
     
     override public func endRefreshing() {

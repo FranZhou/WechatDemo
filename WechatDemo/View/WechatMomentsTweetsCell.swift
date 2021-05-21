@@ -27,7 +27,7 @@ class WechatMomentsTweetsCell: UITableViewCell {
     lazy var nickLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = .black
+        label.textColor = UIColor(red: 47.0 / 255.0, green: 79.0 / 255.0, blue: 79.0 / 255.0, alpha: 1)
         return label
     }()
     
@@ -35,6 +35,7 @@ class WechatMomentsTweetsCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 6
         return imageView
     }()
     
@@ -42,7 +43,6 @@ class WechatMomentsTweetsCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 14)
-//        label.textColor = .white
         label.textColor = .black
         return label
     }()
@@ -52,7 +52,6 @@ class WechatMomentsTweetsCell: UITableViewCell {
         let layout = UICollectionViewFlowLayout()
         
         layout.minimumInteritemSpacing = 16
-//        layout.itemSize = WechatMomentsTweetsCell.oneImageSize()
         
         return layout
     }()
@@ -68,24 +67,25 @@ class WechatMomentsTweetsCell: UITableViewCell {
         collectionView.isScrollEnabled = false
         
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(UICollectionViewCell.self))
-
-         return collectionView
+        
+        return collectionView
     }()
     
     /// tweets comments
     lazy var commentsView: WechatMomentsCommentsView = {
-       let view = WechatMomentsCommentsView()
+        let view = WechatMomentsCommentsView()
+        view.backgroundColor = UIColor(red: 246.0 / 255.0, green: 245.0 / 255.0, blue: 236.0 / 255.0, alpha: 1)
         return view
     }()
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
@@ -122,7 +122,7 @@ class WechatMomentsTweetsCell: UITableViewCell {
         }
         
     }
-
+    
 }
 
 
@@ -130,7 +130,7 @@ extension WechatMomentsTweetsCell {
     
     private func setupUI() {
         self.separatorInset = .zero
-
+        
         self.contentView.backgroundColor = .white
         
         self.contentView.addSubview(self.avatarImageView)
@@ -179,8 +179,6 @@ extension WechatMomentsTweetsCell {
                 maker.left.equalTo(self.avatarImageView.snp.right).offset(8)
                 maker.right.equalTo(-16)
                 maker.bottom.lessThanOrEqualTo(self.contentView.snp.bottom).offset(-10)
-//                maker.height.equalTo(WechatMomentsTweetsCell.collectionViewHeight(totalCount: self.model?.images?.count ?? 0))
-                
                 maker.height.equalTo(self.heightForCollectionView(totalCount: self.model?.images?.count ?? 0))
             }
             
@@ -188,7 +186,7 @@ extension WechatMomentsTweetsCell {
         } else {
             self.imagesView.snp.removeConstraints()
         }
-
+        
         self.commentsView.reloadComments(self.model?.comments)
         
         if let comments = self.model?.comments,
@@ -263,6 +261,7 @@ extension WechatMomentsTweetsCell: UICollectionViewDataSource{
                 maker.edges.equalTo(0)
             })
         }
+        //        imageView?.image = nil
         
         imageView?.fz_setImage(with: image?.url)
         
@@ -273,5 +272,5 @@ extension WechatMomentsTweetsCell: UICollectionViewDataSource{
 }
 
 extension WechatMomentsTweetsCell: UICollectionViewDelegate{
-        
+    
 }

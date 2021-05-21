@@ -97,7 +97,6 @@ extension WechatMomentsCommentsView {
         if label == nil {
             label = UILabel()
             label?.numberOfLines = 0
-            label?.backgroundColor = UIColor.lightGray
         }
         
         // label展示内容处理
@@ -105,14 +104,14 @@ extension WechatMomentsCommentsView {
         if let nick = comment.sender?.nick {
             attri.append(NSAttributedString(string: "\(nick): ", attributes: [
                 NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14),
-                NSAttributedString.Key.foregroundColor: UIColor.blue
+                NSAttributedString.Key.foregroundColor: UIColor(red: 47.0 / 255.0, green: 79.0 / 255.0, blue: 79.0 / 255.0, alpha: 1)
             ]))
         }
         
         if let content = comment.content {
             attri.append(NSAttributedString(string: content, attributes: [
                 NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14),
-                NSAttributedString.Key.foregroundColor: UIColor.red
+                NSAttributedString.Key.foregroundColor: UIColor.black
             ]))
         }
         label?.attributedText = attri

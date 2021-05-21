@@ -81,7 +81,6 @@ class RefreshView: UIView {
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        
         self.prepareForUI()
     }
     
@@ -89,9 +88,17 @@ class RefreshView: UIView {
         self.removeKVO(for: self.superview)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layoutForUI()
+    }
     
     // MARK: - override
     public func prepareForUI(){
+        
+    }
+    
+    public func layoutForUI(){
         
     }
     
